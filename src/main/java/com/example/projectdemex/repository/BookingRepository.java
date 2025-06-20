@@ -1,0 +1,10 @@
+package com.example.projectdemex.repository;
+
+import com.example.projectdemex.model.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface BookingRepository extends JpaRepository<Booking, Long> {
+    List<Booking> findByActiveTrue();
+    Booking findByBookingCode(String bookingCode);
+}

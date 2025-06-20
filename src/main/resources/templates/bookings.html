@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои бронирования</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --danger-color: #f72585;
+            --success-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding-top: 180px;
+            padding-bottom: 100px;
+            margin: 0;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: left;
+            margin-left: 2rem;
+            padding-top: 1.5rem;
+        }
+
+        .logo a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo a:hover {
+            color: var(--secondary-color);
+        }
+
+        .user-actions {
+            display: flex;
+            justify-content: flex-end;
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            gap: 1rem;
+        }
+
+        .user-actions a {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .user-actions .profile-button {
+            background-color: var(--primary-color);
+        }
+
+        .user-actions .profile-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .user-actions .logout-button {
+            background-color: var(--danger-color);
+        }
+
+        .user-actions .logout-button:hover {
+            background-color: #d1145a;
+        }
+
+        .hero-buttons {
+            background: none;
+            padding: 1.2rem 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #eee;
+            gap: 2rem;
+        }
+
+        .cta-button {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .cta-button:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .cta-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .booking-code {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .booking-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .no-bookings {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 1.5rem 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="header-container">
+    <div class="logo">
+        <a href="#" class="dd">
+            <i class="fas fa-cash-register"></i> Систем Сервис Краснодар
+        </a>
+    </div>
+
+    <div class="user-actions">
+        <a href="/profile" class="profile-button">
+            <i class="fas fa-user"></i> Профиль
+        </a>
+        <a href="/login" class="logout-button">
+            <i class="fas fa-sign-out-alt"></i> Выйти
+        </a>
+    </div>
+
+    <div class="hero-buttons">
+        <a href="/" class="cta-button"><i class="fas fa-home"></i> Главная</a>
+        <a href="/complaint" class="cta-button"><i class="fas fa-exclamation-circle"></i> Жалобы</a>
+        <a href="/Product" class="cta-button"><i class="fas fa-box"></i> Товары</a>
+        <a href="/Product/add" class="cta-button"><i class="fas fa-plus-circle"></i> Добавить товар</a>
+        <a href="/bookings" class="cta-button active"><i class="fas fa-shopping-cart"></i> Мои заказы</a>
+    </div>
+</div>
+
+<div class="container">
+    <h1><i class="fas fa-shopping-cart"></i> Мои заказы</h1>
+
+    <div th:if="${#lists.isEmpty(bookings)}">
+        <div class="no-bookings">
+            <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+            <h2>У вас нет активных заказов</h2>
+            <p>Перейдите в раздел <a href="/Product">Товары</a>, чтобы сделать заказ.</p>
+        </div>
+    </div>
+
+    <div th:each="booking : ${bookings}">
+        <div class="booking-card">
+            <div class="booking-header">
+                <span class="booking-code">Заказ #<span th:text="${booking.bookingCode}"></span></span>
+                <span class="booking-date" th:text="${#temporals.format(booking.bookingDate, 'dd.MM.yyyy HH:mm')}"></span>
+            </div>
+
+            <div class="product-info">
+                <h3 th:text="${booking.product.name}"></h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-weight: 600;">Цена:</span>
+                    <span th:text="${booking.product.price} + ' ₽'"></span>
+                </div>
+            </div>
+
+            <div class="booking-actions">
+                <a th:href="@{/bookings/{code}(code=${booking.bookingCode})}"
+                   class="btn" style="background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); text-decoration: none;">
+                    <i class="fas fa-info-circle"></i> Подробнее
+                </a>
+                <form th:action="@{/bookings/cancel/{id}(id=${booking.id})}" method="post">
+                    <button type="submit" class="btn" style="background-color: var(--danger-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); border: none; cursor: pointer;">
+                        <i class="fas fa-times"></i> Отменить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; Систем Сервис Краснодар. Все права защищены.</p>
+        <nav class="footer-nav">
+            <a href="#"><i class="fas fa-file-contract"></i> Условия</a>
+            <a href="#"><i class="fas fa-lock"></i> Конфиденциальность</a>
+            <a href="#"><i class="fas fa-headset"></i> Поддержка</a>
+        </nav>
+    </div>
+</footer>
+</body>
+</html>
