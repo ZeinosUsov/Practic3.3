@@ -332,3 +332,194 @@
 <th:block th:replace="~{/fragments/script_fragment :: scripts}"></th:block>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <div th:replace="~{fragments/head_fragment :: head(pageTitle='Личный кабинет')}"></div>
+    <style>
+        /* Общие стили для фона (оставляем, как было, или убираем, если это не задано внешне) */
+        /* Если нужно задать фон здесь, можно так: */
+        body {
+            background-color: #f0f2f5; /* Легкий серый, как чистый лист */
+            font-family: Arial, sans-serif; /* Простой, читабельный шрифт */
+            color: #333;
+        }
+
+        /* Стиль для кнопки "Выйти" - улучшенная версия .tt */
+        .tt-modern {
+            background: linear-gradient(to right, #4a90e2, #63b8ff);
+            color: white;
+            padding: 0.75rem 1.5rem; /* Более стандартный, не слишком большой паддинг */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px; /* Мягкое скругление, без сильного "pill" эффекта */
+            /* Убираем или сильно уменьшаем box-shadow для ровности */
+            box-shadow: none; /* Убираем тени */
+            transition: background 0.2s ease, transform 0.2s ease; /* Плавный переход для фона и трансформации */
+            font-weight: normal; /* Оставляем стандартный вес шрифта */
+            border: none; /* Убираем границу */
+            cursor: pointer;
+        }
+
+        .tt-modern:hover {
+            background: linear-gradient(to right, #357ABD, #4a90e2); /* Чуть темнее при наведении */
+            text-decoration: none;
+            color: white;
+            transform: translateY(-1px); /* Легкое поднятие при наведении */
+        }
+        
+        /* Стилизация полей ввода и кнопок Bootstrap для ровности и чистоты */
+        .form-control {
+            border-radius: 4px; /* Небольшое скругление */
+            border: 1px solid #ccc; /* Четкая, но не слишком заметная граница */
+            padding: 0.6rem 0.8rem;
+        }
+
+        .btn {
+            border-radius: 4px; /* Небольшое скругление */
+            font-weight: normal; /* Стандартный вес шрифта для кнопок */
+            box-shadow: none !important; /* Убираем тени для всех кнопок Bootstrap */
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: #4a90e2; /* Исходный синий */
+            border-color: #4a90e2;
+        }
+
+        .btn-primary:hover {
+            background-color: #357ABD; /* Темнее синий при наведении */
+            border-color: #357ABD;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        /* Стиль для фото профиля - чистая рамка */
+        .profile-img {
+            border: 1px solid #ccc; /* Простая, тонкая, но четкая рамка */
+            border-radius: 50%; /* Круглая форма */
+            object-fit: cover;
+            width: 250px;
+            height: 250px;
+            /* Убираем тени, которые были в предыдущей версии */
+        }
+
+        /* Выравнивание элементов */
+        .container, .container-fluid {
+            padding-left: 15px; /* Стандартный Bootstrap паддинг */
+            padding-right: 15px; /* Стандартный Bootstrap паддинг */
+        }
+        
+        /* Отступы между секциями */
+        .section-spacing {
+            margin-bottom: 2rem; /* Единый отступ между основными блоками */
+            padding: 1.5rem; /* Небольшой внутренний отступ для секций, если нужны границы */
+            background-color: #ffffff; /* Белый фон для секций */
+            border-radius: 8px; /* Слегка скругленные углы для секций */
+            border: 1px solid #eee; /* Очень тонкая рамка для разделения блоков */
+        }
+
+        /* Для модального окна */
+        .modal-content {
+            border-radius: 8px; /* Слегка скругленные углы */
+            box-shadow: none; /* Убираем тени */
+            border: 1px solid rgba(0, 0, 0, 0.2); /* Стандартная тонкая граница */
+        }
+        .modal-header {
+            border-bottom: 1px solid #eee;
+        }
+        .modal-footer {
+            border-top: 1px solid #eee;
+        }
+
+        /* Убираем лишние <br> и используем отступы Bootstrap */
+        .form-group-mb { /* Дополнительный класс для отступов в группах форм, если нужно */
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-end mb-4">
+        <a href="/" class="tt-modern">
+            Выйти
+        </a>
+    </div>
+
+    <div class="container section-spacing">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <form method="get" class="d-flex align-items-center flex-wrap"> <label class="form-label mb-2 me-2" for="search">
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Поиск..."/>
+                    </label>
+                    <button type="submit" class="btn btn-primary me-2 mb-2">Поиск</button>
+                    <button type="reset" class="btn btn-primary mb-2">Очистить</button>
+                </form>
+            </div>
+            <div class="col-md-5 text-md-end">
+                <div th:replace="~{fragments/profile_button_fragment :: profileButton}"></div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-4"> <div class="container section-spacing">
+        <div class="row align-items-center">
+            <div class="col-md-5 d-flex justify-content-center mb-4 mb-md-0">
+                <div class="text-center">
+                    <img class="profile-img"
+                         th:src="${user.filename != null ? '/uploads/' + user.filename : '/img/user_null.jpg'}"
+                         alt="Фото пользователя"/>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                            data-bs-target="#changePhotoModal">
+                        Сменить фото профиля
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <h5>Ваше имя:</h5>
+                <p class="fw-normal fs-6" th:text="${user.surname + ' ' + user.name}"></p>
+                <h5>Имя пользователя:</h5>
+                <p class="fw-normal fs-6" th:text="${user.username}"></p>
+                <h5>Почта:</h5>
+                <p class="fw-normal fs-6" th:text="${user.email}"></p>
+                <h5>Номер телефона:</h5>
+                <p class="fw-normal fs-6" th:text="${user.phone}"></p>
+                <p class="text-muted fw-light fst-italic fs-6">Ошиблись при вводе данных? Для изменения данных
+                    обратитесь к администратору</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhoto" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePhoto">Смена фото профиля</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" th:action="@{/updatePhoto}">
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="photoInput" name="file" accept="image/*" required/>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сменить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{/fragments/script_fragment :: scripts}"></thk:block>
+</body>
+</html>
