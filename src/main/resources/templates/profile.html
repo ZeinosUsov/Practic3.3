@@ -97,4 +97,238 @@
 </div>
 <th:block th:replace="~{/fragments/script_fragment :: scripts}"></th:block>
 </body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <div th:replace="~{fragments/head_fragment :: head(pageTitle='Личный кабинет')}"></div>
+    <style>
+        /* Общие стили для фона и текста */
+        body {
+            background-color: #f0f2f5; /* Легкий серый фон для современного вида */
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Современный шрифт */
+            color: #333;
+        }
+
+        /* Стиль для кнопки "Выйти" - переделано */
+        .logout-btn-modern {
+            /* Используем те же цвета, но с более глубоким эффектом */
+            background: linear-gradient(to right, #4a90e2, #63b8ff);
+            color: white;
+            padding: 0.8rem 1.8rem; /* Чуть меньше паддинг для более компактного вида */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 50px; /* Сильно скругленные углы для Pill-формы */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+            transition: all 0.3s ease; /* Плавный переход для всех свойств */
+            font-weight: 600; /* Полужирный текст */
+            letter-spacing: 0.5px; /* Небольшой межбуквенный интервал */
+            border: none; /* Убираем стандартную границу */
+            cursor: pointer; /* Указываем, что это интерактивный элемент */
+        }
+
+        .logout-btn-modern:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Усиленная тень при наведении */
+            transform: translateY(-2px); /* Слегка приподнимается */
+            text-decoration: none; /* Убираем подчеркивание при наведении */
+            color: white; /* Убеждаемся, что цвет текста остается белым */
+        }
+
+        /* Контейнер для формы поиска и кнопок */
+        .search-profile-section {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Легкая, но заметная тень */
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Поле ввода поиска */
+        .form-control {
+            border-radius: 8px; /* Более скругленные углы для полей ввода */
+            border: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Кнопки поиска и очистки */
+        .btn-primary {
+            background-color: #4a90e2; /* Основной синий */
+            border-color: #4a90e2;
+            border-radius: 8px; /* Скругленные углы */
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #357ABD; /* Темнее синий при наведении */
+            border-color: #357ABD;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Карточка пользователя */
+        .user-profile-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+
+        .user-profile-card h5 {
+            color: #4a90e2; /* Заголовки синим цветом */
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .user-profile-card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .user-profile-card .text-muted {
+            font-size: 0.9rem;
+            color: #777 !important; /* Убедимся, что цвет приглушенный */
+        }
+
+        /* Фото профиля */
+        .profile-img-container {
+            position: relative;
+            display: inline-block;
+            border-radius: 50%;
+            overflow: hidden; /* Обрезает изображение по кругу */
+            border: 4px solid #4a90e2; /* Стильная синяя рамка */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-img-container img {
+            display: block;
+            object-fit: cover;
+            width: 250px;
+            height: 250px;
+        }
+
+        /* Кнопка смены фото профиля */
+        .btn-change-photo {
+            background-color: #63b8ff; /* Более светлый синий для этой кнопки */
+            border-color: #63b8ff;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-change-photo:hover {
+            background-color: #4a90e2;
+            border-color: #4a90e2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Модальное окно */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #eee;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            color: #4a90e2;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #eee;
+            padding: 1.5rem;
+        }
+
+        /* Кнопки в модальном окне */
+        .modal-body .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .modal-body .btn-primary {
+            background-color: #4a90e2;
+            border-color: #4a90e2;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-3 px-5"> <div class="d-flex justify-content-end mb-4"> <a href="/" class="logout-btn-modern">
+            Выйти
+        </a>
+    </div>
+
+    <div class="container search-profile-section">
+        <br> <div class="row align-items-center"> <div class="col-md-7"> <form method="get" class="d-flex align-items-center"> <label class="form-label mb-0 me-2" for="search"> <input type="text" class="form-control" id="search" name="search" placeholder="Поиск..."/> </label>
+                    <button type="submit" class="btn btn-primary me-2">Поиск</button>
+                    <button type="reset" class="btn btn-primary">Очистить</button>
+                </form>
+            </div>
+            <div class="col-md-5 text-md-end"> <div th:replace="~{fragments/profile_button_fragment :: profileButton}"></div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-5"> <div class="container mt-5 user-profile-card">
+        <div class="row align-items-center"> <div class="col-md-5 d-flex justify-content-center align-items-center mb-4 mb-md-0"> <div class="text-center">
+                    <div class="profile-img-container">
+                        <img th:src="${user.filename != null ? '/uploads/' + user.filename : '/img/user_null.jpg'}"
+                             alt="Фото пользователя"/>
+                    </div>
+                    <br> <button type="button" class="btn btn-change-photo mt-3" data-bs-toggle="modal"
+                            data-bs-target="#changePhotoModal">
+                        Сменить фото профиля
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <h5>Ваше имя:</h5>
+                <p class="fw-normal fs-6" th:text="${user.surname + ' ' + user.name}"></p>
+                <h5>Имя пользователя:</h5>
+                <p class="fw-normal fs-6" th:text="${user.username}"></p>
+                <h5>Почта:</h5>
+                <p class="fw-normal fs-6" th:text="${user.email}"></p>
+                <h5>Номер телефона:</h5>
+                <p class="fw-normal fs-6" th:text="${user.phone}"></p>
+                <p class="text-muted fw-light fst-italic fs-6">Ошиблись при вводе данных? Для изменения данных
+                    обратитесь к администратору</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhoto" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePhoto">Смена фото профиля</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" th:action="@{/updatePhoto}">
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="photoInput" name="file" accept="image/*" required/>
+                    </div>
+                    <div class="d-flex justify-content-end"> <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сменить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{/fragments/script_fragment :: scripts}"></th:block>
+</body>
 </html>
